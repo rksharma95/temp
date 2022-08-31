@@ -5,8 +5,6 @@ on: workflow_dispatch
 jobs:
   build:
     runs-on: ubuntu-22.04
-    env:
-      RUNTIME: crio
     steps:
       - name: Add CRI-O's GPG key
         run: |
@@ -24,3 +22,7 @@ jobs:
         run: |
           sudo systemctl daemon-reload
           sudo systemctl start crio.service
+      - name: Install k3s
+        run: |
+          curl -sfL https://get.k3s.io | K3S_KUBECONFIG_MODE="644" INSTALL_K3S_EXEC="--disable=traefik --container-runtime-endpoint unix:///var/run/crio/crio.sock --kubelet-arg cgroup-driver=systemd" sh -
+          [[ $? != 0 ]] && echo "Failed to install k3s" && exit 1
