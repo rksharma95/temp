@@ -24,5 +24,5 @@ jobs:
           sudo systemctl start crio.service
       - name: Install k3s
         run: |
-          curl -sfL https://get.k3s.io | K3S_KUBECONFIG_MODE="644" INSTALL_K3S_EXEC="--disable=traefik --container-runtime-endpoint unix:///var/run/crio/crio.sock --kubelet-arg cgroup-driver=systemd" sh -
+          curl -sfL https://get.k3s.io | K3S_KUBECONFIG_MODE="644" INSTALL_K3S_EXEC="--disable=traefik --container-runtime-endpoint unix:///var/run/crio/crio.sock --kubelet-arg cgroup-driver=cgroupfs" sh -
           [[ $? != 0 ]] && echo "Failed to install k3s" && exit 1
